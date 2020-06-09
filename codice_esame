@@ -63,14 +63,11 @@ boxplot(EN, horizontal=T,outline=F,axes=T)
 # COASTLINES
 # Fai una cartella con tutti questi file
 # mettila come working directory
-
 install.packages("rgdal")
-
 library(rgdal)
 # dopo aver messo la cartella con le coastlines la working directory
 coastline <- readOGR("ne_10m_coastline.shp")
 # cambia la working directory sulla cartella di lavoro (es.i dati del mais)
-
 soy_1995 <- raster("Soybean_1995_Yield.tif")
 plot(soy_1995)
 plot(coastline,add=T) # con questo secondo plot plotti anche le linee di costa
@@ -99,4 +96,34 @@ cldiff <- colorRampPalette(c('blue','white','red'))(100)
 plot(difsoy, col=cldiff)
 
 # POI CAZZO C'E' DA FARE!?
+
+
+
+# TEMPERATURA
+setwd("C:/temperatura/")
+install.packages("ncdf4")    # posso caricare i dati da Copernicus
+library(ncdf4)
+library(raster)
+rlist <- list.files(pattern=".nc")   # controllare il formato delle immagini, in Copernicus sono spesso ".nc"
+rlist    # dentro trovo le 10 immagini scaricate da Copernicus
+list_rast <- lapply(rlist, raster)
+temp.multitemp <- stack(list_rast)
+cl <- colorRampPalette(c('beige','yellow','orange','red'))(100)
+plot(temp.multitemp, col=cl, zlim=c(0,1.5))
+
+diftemp = temp.multitemp$Fraction.of.Valid.Observations.4 - temp.multitemp$Fraction.of.Valid.Observations.1
+cldiff <- colorRampPalette(c('blue','white','red'))(100)
+plot(diftemp, col=cldiff)
+                               
+setwd("C:/lab/coastline/")   # per mettere le coastline su immagine singola (non riesco a farlo su l'intero set di immagini)
+coastline <- readOGR("ne_10m_coastline.shp")
+plot(coastline,add=T)
+
+
+extension <- c(6, 20, 35, 50)   # zoom su Nord Africa
+temp.NordAfrica <- crop(diftemp, extension)
+plot(temp.NordAfrica, col=cldiff, zlim=c(-0.2,1))
+
+
+
 
