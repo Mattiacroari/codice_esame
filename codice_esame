@@ -36,13 +36,6 @@ predicted.snow.2025.norm <- raster("predicted.snow.2025.norm.tif")
 plot(predicted.snow.2025.norm, col=cl)
 
 
-# misurare come è cambiato nel tempo con comando "boxplot"
-boxplot(...)   # se è posizionato verticalmente
-boxplot(EN, horizontal=T)
-boxplot(EN, horizontal=T,outline=F)   # per rimuovere gli outline
-boxplot(EN, horizontal=T,outline=F,axes=T)
-
-
 
 # fare zoom su zona del Mediterraneo/MENA
 # diversi modi:
@@ -71,6 +64,14 @@ coastline <- readOGR("ne_10m_coastline.shp")
 soy_1995 <- raster("Soybean_1995_Yield.tif")
 plot(soy_1995)
 plot(coastline,add=T) # con questo secondo plot plotti anche le linee di costa
+
+
+boxplot(temp.multitemp$Fraction.of.Valid.Observations.1, horizontal=T,outline=F,axes=T)
+boxplot(temp.multitemp$Fraction.of.Valid.Observations.2, horizontal=T,outline=F,axes=T)
+boxplot(temp.multitemp$Fraction.of.Valid.Observations.3, horizontal=T,outline=F,axes=T)
+boxplot(temp.multitemp$Fraction.of.Valid.Observations.4, horizontal=T,outline=F,axes=T)
+par(mfrow=c(2,2))
+
 
 
 
@@ -114,18 +115,16 @@ plot(temp.multitemp, col=cl, zlim=c(0,1.5))
 diftemp = temp.multitemp$Fraction.of.Valid.Observations.4 - temp.multitemp$Fraction.of.Valid.Observations.1
 cldiff <- colorRampPalette(c('blue','yellow','red'))(100)
 plot(diftemp, col=cldiff)
-                               
-setwd("C:/lab/coastline/")   # per mettere le coastline su immagine singola (non riesco a farlo su l'intero set di immagini)
-coastline <- readOGR("ne_10m_coastline.shp")
-plot(coastline,add=T)
-
-
+                           
 extension <- c(-20, 60, 0, 40)   # zoom su Nord Africa
 temp.NordAfrica <- crop(diftemp, extension)
 plot(temp.NordAfrica, col=cldiff, zlim=c(-0.2,1))
 
 
-
+boxplot(temp.multitemp, horizontal=T,outline=F,axes=T,las=1) 
+      # boxplot con nomi dei file orizzontali
+      # mostra i dati del pacchetto temp.multitemp
+      # non ho idea di cosa cazzo mostri...AIUTOOOOOO!!
 
 
 
