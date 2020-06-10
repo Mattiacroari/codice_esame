@@ -112,7 +112,7 @@ cl <- colorRampPalette(c('beige','yellow','orange','red'))(100)
 plot(temp.multitemp, col=cl, zlim=c(0,1.5))
 
 diftemp = temp.multitemp$Fraction.of.Valid.Observations.4 - temp.multitemp$Fraction.of.Valid.Observations.1
-cldiff <- colorRampPalette(c('blue','white','red'))(100)
+cldiff <- colorRampPalette(c('blue','yellow','red'))(100)
 plot(diftemp, col=cldiff)
                                
 setwd("C:/lab/coastline/")   # per mettere le coastline su immagine singola (non riesco a farlo su l'intero set di immagini)
@@ -120,9 +120,16 @@ coastline <- readOGR("ne_10m_coastline.shp")
 plot(coastline,add=T)
 
 
-extension <- c(6, 20, 35, 50)   # zoom su Nord Africa
+extension <- c(-20, 60, 0, 40)   # zoom su Nord Africa
 temp.NordAfrica <- crop(diftemp, extension)
 plot(temp.NordAfrica, col=cldiff, zlim=c(-0.2,1))
+
+
+
+
+
+
+
 
 
 
