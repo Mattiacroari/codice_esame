@@ -122,8 +122,7 @@ temp.NordAfrica <- crop(diftemp, extension)
 plot(temp.NordAfrica, col=cldiff, zlim=c(-0.2,1))
 
 
-boxplot(temp.multitemp, horizontal=T,outline=F,axes=T,las=1) 
-      # boxplot con nomi dei file orizzontali
+s      # boxplot con nomi dei file orizzontali
       # mostra i dati del pacchetto temp.multitemp
       # non ho idea di cosa cazzo mostri...AIUTOOOOOO!!
 
@@ -144,6 +143,52 @@ T_maggio2017 <- raster("c_gls_LST10-TCI_201705110000_GLOBE_GEO_V1.2.1.nc")
 plot(T_maggio2017, col=cl, zlim=c(0,1), main="TEMPERATURA MAGGIO 2017")   # plottato una sola immagine con colore, zlim e nome
 
 freq_2017 <- freq(T_maggio2017)
+
+
+
+
+
+
+
+
+###########################################
+############ Popolazione Egitto
+
+setwd("C:/popolazione Egitto/")
+library(raster)
+
+rlist <- list.files(pattern=".tif")
+rlist
+list_rast <- lapply(rlist, raster)
+pop.multitemp <- stack(list_rast)
+plot(pop.multitemp, col=cl, zlim=c(0,5000))
+
+
+cl <- colorRampPalette(c('blue','white','red'))(100)
+P_egitto1975 <- raster("GHS_POP_E1975_GLOBE_R2019A_4326_9ss_V1_0_21_5.tif")
+P_egitto1990 <- raster("GHS_POP_E1990_GLOBE_R2019A_4326_9ss_V1_0_21_5.tif")
+P_egitto2000 <- raster("GHS_POP_E2000_GLOBE_R2019A_4326_9ss_V1_0_21_5.tif")
+P_egitto2015 <- raster("GHS_POP_E2015_GLOBE_R2019A_4326_9ss_V1_0_21_5.tif")
+
+par(mfrow=c(2,2))
+plot(P_egitto1975, col=cl, main="Popolazione Egitto 1975", zlim=c(0,5000))
+plot(P_egitto1990, col=cl, main="Popolazione Egitto 1990", zlim=c(0,5000))
+plot(P_egitto2000, col=cl, main="Popolazione Egitto 2000", zlim=c(0,5000))
+plot(P_egitto2015, col=cl, main="Popolazione Egitto 2015", zlim=c(0,5000))
+
+difpop = P_egitto2015 - P_egitto1975   # immagini separate, sotto invece serve se metto tutto in un unico gruppo
+
+difpop = pop.multitemp$GHS_POP_E2015_GLOBE_R2019A_4326_9ss_V1_0_21_5 - pop.multitemp$GHS_POP_E1975_GLOBE_R2019A_4326_9ss_V1_0_21_5
+cldiff <- colorRampPalette(c('blue','yellow','red'))(100)
+plot(diftemp, col=cldiff)
+
+
+extension <- c(30, 33, 29, 32)   # zoom su Foce Nilo
+pop.FoceNilo <- crop(difpop, extension)
+plot(pop.FoceNilo, col=cldiff)
+
+boxplot(pop.multitemp, horizontal=T,axes=T,las=1) 
+
 
 
 
