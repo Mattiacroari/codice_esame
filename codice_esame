@@ -135,3 +135,21 @@ boxplot(temp.multitemp$Fraction.of.Valid.Observations.4, horizontal=T,outline=F,
 boxplot(temp.multitemp$Fraction.of.Valid.Observations.1, horizontal=T,outline=F,axes=T, ylim=c(0,1))
 
 
+
+
+
+
+
+T_maggio2017 <- raster("c_gls_LST10-TCI_201705110000_GLOBE_GEO_V1.2.1.nc")
+plot(T_maggio2017, col=cl, zlim=c(0,1), main="TEMPERATURA MAGGIO 2017")   # plottato una sola immagine con colore, zlim e nome
+
+freq_2017 <- freq(T_maggio2017)
+
+
+
+
+
+
+
+
+
