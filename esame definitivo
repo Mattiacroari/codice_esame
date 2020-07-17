@@ -1,4 +1,4 @@
-######### ESAME DI ECOLOGIA DEL PAESAGGIO, 2020/21                           MARCO LOZZA
+######### ESAME DI ECOLOGIA DEL PAESAGGIO, 2020/21                           MATTIA CROARI
 
 # dati presi dal sito di EARTHSTAT
 # dati rappresentanti la resa media in tonnellate per ettaro durante il periodo che va dal 1995 al 2005 
@@ -66,9 +66,8 @@ plot(wheat_yield.multitemp, zlim=c(0,7))
 
 # imposto una color ramp palette e do il limite di valori da 0 a 4
 
-cl <- colorRampPalette(c('aliceblue','darkgoldenrod1','darkgoldenrod4'))(100)
+cl <- colorRampPalette(c('aquamarine','darkolivegreen1','green2','green4'))(100)
 plot(wheat_yield.multitemp,col=cl,zlim=c(0,7))
-
 
 # il problema è che le mappe non hanno le coastlines 
 # aggiungo le coastlines alle mappe
@@ -81,14 +80,14 @@ plot(wheat_yield.multitemp,col=cl,zlim=c(0,7))
 #### 2. FUNZIONE PER CARICARE LE COASTLINES
 
 
-# imposto la work direct. sulla cratella con lo shape file
+# imposto la work direct. sulla cartella con lo shape file
 
 setwd("C:/esame/coastline")
 library(rgdal)
 
 coastline <- readOGR("ne_10m_coastline.shp")
 
-# ri imposto la work direct. sulla cartella SOYBEANS
+# ri imposto la work direct. sulla cartella "esame"
 
 setwd("C:/esame")
 
@@ -101,17 +100,17 @@ setwd("C:/esame")
 
 # questo perchè lo shape file non si attacca ad uno stack file ma solo alle immagini raster singole
 
-setwd("C:/esame/coastline")
+setwd("C:/esame")
 wheat_1995 <- raster("Wheat_1995_Yield.tif")
 wheat_2000 <- raster("Wheat_2000_Yield.tif")
 wheat_2005 <- raster("Wheat_2005_Yield.tif")
 
 
 # cerco su internet tutto l'arrange dei colori di R e cerco i colori giusti 
-cl <- colorRampPalette(c('aliceblue','darkgoldenrod1','darkgoldenrod4'))(100)
+cl <- colorRampPalette(c('aquamarine','darkolivegreen1','green2','green4'))(100)
 
 # plotto le immagini
-plot(wheat_1995,col=cl)
+plot(wheat_1995,col=cl) # mettere zlim e nome grafico
 # cambio la zlim per avere le aree meglio rappresentate e aggiungo il titolo
 plot(wheat_1995,col=cl,zlim=c(0,7),main="GLOBAL WHEAT YIELD 1995")
 
@@ -130,7 +129,7 @@ dev.off()
 #### 4. FUNZIONE PER UNIRE LE COASTLINES
 
 
-cl <- colorRampPalette(c('aliceblue','darkgoldenrod1','darkgoldenrod4'))(100)
+cl <- colorRampPalette(c('aquamarine','darkolivegreen1','green2','green4'))(100)
 plot(wheat_1995,col=cl,zlim=c(0,7),main="GLOBAL WHEAT YIELD 1995")
 
 plot(coastline,add=T)   # aggiungo le coastlines all'immagine raster e lo posso fare perche sono entrambe WGS84
@@ -198,7 +197,7 @@ plot(ggplot1995)
 # cambio colore delle colonne in giallo,aggiungo i limiti sulla y, e il titolo e cambio anche i nomi della x e della y
 
 ggplot1995 <- ggplot(tons_per_hectare_1995, aes(x=tons_per_hectare,y=n.pixels)) + 
-geom_bar(stat="identity", fill="darkgoldenrod1") +
+geom_bar(stat="identity", fill="forestgreen") +
 ylim(0, 700000) +
 labs(title="TONS PER HECTARE 1995",x = "TONS/HECTARE",y="N. OF PIXELS (SINGOL CELL AREA 10 km2)")
 
@@ -216,7 +215,7 @@ tons_per_hectare_2005 <- data.frame(tons_per_hectare2,n.pixels2)
 View(tons_per_hectare_2005)
 
 ggplot2005 <- ggplot(tons_per_hectare_2005, aes(x=tons_per_hectare2,y=n.pixels2)) + 
-geom_bar(stat="identity",fill="darkgoldenrod1") +
+geom_bar(stat="identity",fill="forestgreen") +
 ylim(0, 700000) +
 labs(title="TONS PER HECTARE 2005",x = "TONS/HECTARE",y="N. OF PIXELS (SINGOL CELL AREA 10 km2)")
 
@@ -266,9 +265,10 @@ diff <- wheat_2005-wheat_1995
 # aggiungo al plot dell'immagine la color palette, il titolo e il limite dei valori con zlim
 # aggiungo anche le coastlines
 
-cl <- colorRampPalette(c('aliceblue','darkgoldenrod1','darkgoldenrod4'))(100)
-plot(diff,col=cl,zlim=c(0,7),main="GLOBAL WHEAT YIELD DIFFERENCE FROM 1995 TO 2005")
+cl1 <- colorRampPalette(c('red','yellow','green'))(100)
+plot(diff,col=cl1,zlim=c(-2,3),main="GLOBAL WHEAT YIELD DIFFERENCE FROM 1995 TO 2005")
 plot(coastline,lwd=0.3,add=T)
+
 
 # extension diverse
 extension <- c(-180, 180, -85.22194, 83.6341)
@@ -281,77 +281,100 @@ diff <- crop(diff, extension)  # non funziona....da riprovare
 ###  funzione CROP della zona del SUD AMERICA
 
 
-extension <- c(-100, -20, -60, 20)   # zona SUD AMERICA
+extension <- c(-100, -20, -60, 20)  # sud america
+extension <- c(110, 160, -50, 0)   # zona AUSTRALIA
+wheat_1995_AU <- crop(wheat_1995, extension)
+wheat_2000_AU <- crop(wheat_2000, extension)
+wheat_2005_AU <- crop(wheat_2005, extension)
+
 
 soy_1995_SA <- crop(soy_1995, extension)
 soy_2000_SA <- crop(soy_2000, extension)
 soy_2005_SA <- crop(soy_2005, extension)
 
 # le plotto tutte insieme e aggiungo la color ramp, il limite zlim e il titolo
+cl <- colorRampPalette(c('aquamarine','darkolivegreen1','green2','green4'))(100)
 par(mfrow=c(2,2))  
-plot(soy_1995_SA,col=cl,zlim=c(0,4),main="SOUTH AMERICA SOY BEANS YIELD 1995")
+plot(wheat_1995_AU,col=cl,zlim=c(0,7),main="AUSTRALIA WHEAT YIELD 1995")
 plot(coastline,lwd=0.3,add=T) 
-plot(soy_2000_SA,col=cl,zlim=c(0,4),main="SOUTH AMERICA SOY BEANS YIELD 2000")
+plot(wheat_2000_AU,col=cl,zlim=c(0,7),main="AUSTRALIA WHEAT YIELD 2000")
 plot(coastline,lwd=0.3,add=T) 
-plot(soy_2005_SA,col=cl,zlim=c(0,4),main="SOUTH AMERICA SOY BEANS YIELD 2005")
+plot(wheat_2005_AU,col=cl,zlim=c(0,7),main="AUSTRALIA WHEAT YIELD 2005")
 plot(coastline,lwd=0.3,add=T)
 
 # metto le mappe del 1995 e del 2005 una di finaco all'altra e aggiungo il titolo al grafico
 par(mfrow=c(1,2))                       
-plot(soy_1995_SA,col=cl,zlim=c(0,4),main="SOUTH AMERICA SOY BEANS YIELD 1995")
+plot(wheat_1995_AU,col=cl,zlim=c(0,7),main="AUSTRALIA WHEAT YIELD 1995")
 plot(coastline,lwd=0.3,add=T)
 
-plot(soy_2005_SA,col=cl,zlim=c(0,4),main="SOUTH AMERICA SOY BEANS YIELD 2005")
+plot(wheat_2005_AU,col=cl,zlim=c(0,7),main="AUSTRALIA WHEAT YIELD 2005")
 plot(coastline,lwd=0.3,add=T)
 
 
 
 
-###### 9. FUNZIONE DIFFERENZA CON I CROP DEL SUD AMERICA
+###### 9. FUNZIONE DIFFERENZA CON I CROP DELL' AUSTRALIA
 
 
-# posso fare la differenza dei due crop in SUD AMERICA
+# posso fare la differenza dei due crop in AUSTRALIA
 
-diff_soy_SA <- soy_2005_SA - soy_1995_SA
-cl <- colorRampPalette(c('aliceblue','darkgoldenrod1','darkgoldenrod4'))(100)  
+diff_wheat_AU <- wheat_2005_AU - wheat_1995_AU
+cl1 <- colorRampPalette(c('red','yellow','green'))(100)
 
 # aggiungo sempre lo stesso zlim e il titolo del grafico
-plot(diff_soy_SA,col=cl,zlim=c(0,4),main="SOUTH AMERICA SOY BEANS YIELD DIFFERENCE FROM 1995 TO 2005")
+plot(diff_wheat_AU,col=cl1,zlim=c(-2,3),main="AUSTRALIA WHEAT YIELD DIFFERENCE FROM 1995 TO 2005")
 plot(coastline,lwd=0.3,add=T)
 
+################################################################################################
+################################################################################################
+# le coastlines e le immagini tif pero hanno leggermente degli extent diversi per cui le allineo
+
+coastlines  # extension : -180, 180, -85.22194, 83.6341  (xmin, xmax, ymin, ymax)
+diff_wheat_AU    # extension : 110, 160, -50, 0  (xmin, xmax, ymin, ymax)
+extension <- c(-180, 180, -85.22194, 83.6341)
+diff_wheat_AU <- crop(diff_wheat_AU, extension)
+plot(diff_wheat_AU,col=cl1,zlim=c(-2,3),main="AUSTRALIA WHEAT YIELD DIFFERENCE FROM 1995 TO 2005")
+plot(coastline,lwd=0.3,add=T)
+
+# creo una nuova extension da applicare a tutte le immagini raster
+
+extension <- c(-180, 180, -85.22194, 83.6341)
+wheat_1995 <- crop(wheat_1995, extension) # mantengo i nomi originali ma li cambio l'estensione
+wheat_2000 <- crop(wheat_2000, extension)
+wheat_2005 <- crop(wheat_2005, extension)
+################################################################################################
+################################################################################################
 
 
 
-#### 10. FUNZIONE GGPLOT GRAFICO COLONNEDEL SUD AMERICA(1995-2005)
+
+#### 10. FUNZIONE GGPLOT GRAFICO COLONNE DELL' AUSTRALIA (1995-2005)
 
 # con la funzione "freq" creo un frequency table dove mi fa il conto di tutti i pixel con uguali valori
-freq.SA.1995 <- freq(soy_1995_SA)
-freq.SA.2005 <- freq(soy_2005_SA) # guardo le tabella e vedo i valori come sono organizzati
+freq.AU.1995 <- freq(wheat_1995_AU)
+freq.AU.2005 <- freq(wheat_2005_AU) # guardo le tabella e vedo i valori come sono organizzati
  
-View(freq.SA.1995)
-View(freq.SA.2005)
+View(freq.AU.1995)
+View(freq.AU.2005)
 
 
-# mi creo una tabella con i valori che riporto anche sul grafico da 0 a 4 (dove ho la maggior parte dei dati)
-# tabella dei valori per il raster Sud America 1995
+# mi creo una tabella con i valori che riporto anche sul grafico da 0 a 7 (dove ho la maggior parte dei dati)
+# tabella dei valori per il raster AUSTRALIA 1995
 
 
-tons_per_hectare_SA1995 <- c(1,2,3,4)
-n.pixels_SA1995 <- c(7901,45675,6078,196)
+tons_per_hectare_AU1995 <- c(1,2,3,4,5)
+n.pixels_AU1995 <- c(15570,33309,7662,1616,337)
 
 # creo la tabella
-tons_per_hectare_1995SA <- data.frame(tons_per_hectare_SA1995,n.pixels_SA1995)
-View(tons_per_hectare_1995SA)
-# creo le basi per il grafico del 1995 del Sud America
-ggplot1995SA <- ggplot(tons_per_hectare_1995SA, aes(x=tons_per_hectare_SA1995,y=n.pixels_SA1995)) + geom_bar(stat="identity",fill="white")
-plot(ggplot1995SA)
+tons_per_hectare_1995AU <- data.frame(tons_per_hectare_AU1995,n.pixels_AU1995)
+View(tons_per_hectare_1995AU)
+# creo le basi per il grafico del 1995 dell' Australia
+ggplot1995AU <- ggplot(tons_per_hectare_1995AU, aes(x=tons_per_hectare_AU1995,y=n.pixels_AU1995)) + geom_bar(stat="identity",fill="white")
+plot(ggplot1995AU)
 
 # cambio colore delle colonne in giallo,aggiungo i limiti sulla y, e il titolo
 
-ggplot1995SA <- ggplot(tons_per_hectare_1995SA, aes(x=tons_per_hectare_SA1995,y=n.pixels_SA1995) + 
-geom_bar(stat="identity", fill="goldenrod") +
-ylim(0, 60000) +
-labs(title="TONS/HECTARE 1995 SOUTH AMERICA",x = "TONS/HECTARE",y="N. OF PIXELS (SINGOL CELL AREA 10 km2)")
+ggplot1995AU <- ggplot(tons_per_hectare_1995AU, aes(x=tons_per_hectare_AU1995,y=n.pixels_AU1995) + geom_bar(stat="identity", fill="goldenrod") + ylim(0, 60000) + labs(title="TONS/HECTARE 1995 AUSTRALIA",x = "TONS/HECTARE",y="N. OF PIXELS (SINGOL CELL AREA 10 km2)")
                        
 # stessa funzione sopra ma R si vede che la prende solo scritta cosi tutta dritta                                         
 ggplot1995SA <- ggplot(tons_per_hectare_1995SA, aes(x=tons_per_hectare_SA1995,y=n.pixels_SA1995)) + geom_bar(stat="identity",fill="goldenrod") + ylim(0, 60000) + labs(title="TONS/HECTARE 1995 SOUTH AMERICA",x = "TONS/HECTARE",y="N. OF PIXELS (SINGOL CELL AREA 10 km2)")
