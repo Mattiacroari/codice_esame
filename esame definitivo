@@ -394,7 +394,8 @@ library("gridExtra")
 grid.arrange(ggplot1995AU,ggplot2005AU,nrow=1)
 
 
-
+#############################################################################
+#############################################################################
                        
 #### PROVO FUNZIONE PER CREARE UN DATASET DI RANDOM DATA
 
@@ -409,10 +410,11 @@ points.p <- randomPoints(wheat_1995, 1000 )
 plot(points,pch=20,cex=0.1)
 
 # plotto la mappa e sopra i punti
-plot(wheat_1995_brick,zlim=c(0,4),col=cl)
+plot(wheat_1995_brick,zlim=c(0,7),col=cl)
 points(points,pch=20,cex=0.1)
 
-
+#############################################################################
+#############################################################################
 
 
 
