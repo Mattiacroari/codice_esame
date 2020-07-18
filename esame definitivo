@@ -21,9 +21,9 @@
 
 # 8. FUNZIONE CROP     
 
-# 9. FUNZIONE DIFFERENZA CON I CROP DEL SUD AMERICA   
+# 9. FUNZIONE DIFFERENZA CON I CROP DELL AUSTRALIA   
 
-# 10. FUNZIONE GGPLOT GRAFICO COLONNEDEL SUD AMERICA(1995-2005)  
+# 10. FUNZIONE GGPLOT GRAFICO COLONNE DELL' AUSTRALIA(1995-2005)  
 
 
 
@@ -64,7 +64,7 @@ list_rast <- lapply(rlist, raster)
 wheat_yield.multitemp <- stack(list_rast)
 plot(wheat_yield.multitemp, zlim=c(0,7))
 
-# imposto una color ramp palette e do il limite di valori da 0 a 4
+# imposto una color ramp palette e do il limite di valori da 0 a 7
 
 cl <- colorRampPalette(c('aquamarine','darkolivegreen1','green2','green4'))(100)
 plot(wheat_yield.multitemp,col=cl,zlim=c(0,7))
@@ -134,7 +134,7 @@ plot(wheat_1995,col=cl,zlim=c(0,7),main="GLOBAL WHEAT YIELD 1995")
 
 plot(coastline,add=T)   # aggiungo le coastlines all'immagine raster e lo posso fare perche sono entrambe WGS84
 
-# cambio pero la larghezza delle linee delle coaste per farle piu sottili con "lwd"
+# cambio pero la larghezza delle linee delle coste per farle piu sottili con "lwd"
 
 plot(coastline,lwd=0.3)
 
@@ -168,9 +168,6 @@ plot(coastline,lwd=0.3,add=T)
 
 
 
-
-
-
 #### 5. FUNZIONE GGPLOT2 : GRAFICO COLONNE (PIXELS E TONNELLATE PER ETTARO)  
 
 
@@ -183,7 +180,7 @@ freq(wheat_1995)
 fr1995 <- freq(wheat_1995) # guardo la tabella e vedo i valori come sono organizzati
 View(fr1995)
 
-# mi creo una tabella con i valori che riporto anche sul grafico da 0 a 4 (dove ho la maggior parte dei dati)
+# mi creo una tabella con i valori che riporto anche sul grafico da 0 a 7 (dove ho la maggior parte dei dati)
 
 tons_per_hectare <- c(1,2,3,4,5,6,7)
 n.pixels <- c(21476,444102,426895,161237,82054,48303,28284)
@@ -198,9 +195,9 @@ plot(ggplot1995)
 
 ggplot1995 <- ggplot(tons_per_hectare_1995, aes(x=tons_per_hectare,y=n.pixels)) + 
 geom_bar(stat="identity", fill="forestgreen") +
-ylim(0, 700000) +
+ylim(0, 500000) +
 labs(title="TONS PER HECTARE 1995",x = "TONS/HECTARE",y="N. OF PIXELS (SINGOL CELL AREA 10 km2)")
-
+plot(ggplot1995)
 
 # faccio la stessa cosa ma per il 2005
 
@@ -216,8 +213,9 @@ View(tons_per_hectare_2005)
 
 ggplot2005 <- ggplot(tons_per_hectare_2005, aes(x=tons_per_hectare2,y=n.pixels2)) + 
 geom_bar(stat="identity",fill="forestgreen") +
-ylim(0, 700000) +
+ylim(0, 500000) +
 labs(title="TONS PER HECTARE 2005",x = "TONS/HECTARE",y="N. OF PIXELS (SINGOL CELL AREA 10 km2)")
+plot(ggplot2005)
 
 
 # Metto i due grafici appena ottenuti sulla stessa riga 
@@ -393,28 +391,6 @@ library("gridExtra")
 
 grid.arrange(ggplot1995AU,ggplot2005AU,nrow=1)
 
-
-#############################################################################
-#############################################################################
-                       
-#### PROVO FUNZIONE PER CREARE UN DATASET DI RANDOM DATA
-
-install.packages("dismo")
-library(dismo)
-
-# points presence, 1000 punti random 
-
-points.p <- randomPoints(wheat_1995, 1000 )
-
-# plotto i punti sulla mappa (pch=20 puntini neri, cex= dimensione punti)
-plot(points,pch=20,cex=0.1)
-
-# plotto la mappa e sopra i punti
-plot(wheat_1995_brick,zlim=c(0,7),col=cl)
-points(points,pch=20,cex=0.1)
-
-#############################################################################
-#############################################################################
 
 
 
