@@ -278,19 +278,14 @@ diff <- crop(diff, extension)  # non funziona....da riprovare
 ##### 8. FUNZIONE CROP      
                            
 
-###  funzione CROP della zona del SUD AMERICA
+###  funzione CROP della zona dell'AUSTRALIA
 
 
-extension <- c(-100, -20, -60, 20)  # sud america
 extension <- c(110, 160, -50, 0)   # zona AUSTRALIA
 wheat_1995_AU <- crop(wheat_1995, extension)
 wheat_2000_AU <- crop(wheat_2000, extension)
 wheat_2005_AU <- crop(wheat_2005, extension)
 
-
-soy_1995_SA <- crop(soy_1995, extension)
-soy_2000_SA <- crop(soy_2000, extension)
-soy_2005_SA <- crop(soy_2005, extension)
 
 # le plotto tutte insieme e aggiungo la color ramp, il limite zlim e il titolo
 cl <- colorRampPalette(c('aquamarine','darkolivegreen1','green2','green4'))(100)
@@ -368,41 +363,25 @@ n.pixels_AU1995 <- c(15570,33309,7662,1616,337)
 # creo la tabella
 tons_per_hectare_1995AU <- data.frame(tons_per_hectare_AU1995,n.pixels_AU1995)
 View(tons_per_hectare_1995AU)
-# creo le basi per il grafico del 1995 dell' Australia
-ggplot1995AU <- ggplot(tons_per_hectare_1995AU, aes(x=tons_per_hectare_AU1995,y=n.pixels_AU1995)) + geom_bar(stat="identity",fill="white")
+# creo le basi per il grafico del 1995 dell' Australia, limiti sulla y e il titolo
+ggplot1995AU <- ggplot(tons_per_hectare_1995AU, aes(x=tons_per_hectare_AU1995,y=n.pixels_AU1995)) + geom_bar(stat="identity",fill="white") + ylim(0, 40000) + labs(title="TONS/HECTARE 1995 AUSTRALIA",x = "TONS/HECTARE",y="N. OF PIXELS (SINGOL CELL AREA 10 km2)")
 plot(ggplot1995AU)
 
-# cambio colore delle colonne in giallo,aggiungo i limiti sulla y, e il titolo
 
-ggplot1995AU <- ggplot(tons_per_hectare_1995AU, aes(x=tons_per_hectare_AU1995,y=n.pixels_AU1995) + geom_bar(stat="identity", fill="goldenrod") + ylim(0, 60000) + labs(title="TONS/HECTARE 1995 AUSTRALIA",x = "TONS/HECTARE",y="N. OF PIXELS (SINGOL CELL AREA 10 km2)")
-                       
-# stessa funzione sopra ma R si vede che la prende solo scritta cosi tutta dritta                                         
-ggplot1995SA <- ggplot(tons_per_hectare_1995SA, aes(x=tons_per_hectare_SA1995,y=n.pixels_SA1995)) + geom_bar(stat="identity",fill="goldenrod") + ylim(0, 60000) + labs(title="TONS/HECTARE 1995 SOUTH AMERICA",x = "TONS/HECTARE",y="N. OF PIXELS (SINGOL CELL AREA 10 km2)")
-plot(ggplot1995SA)
 
 # faccio la stessa cosa ma per il 2005
 
-View(freq.SA.2005)
+View(freq.AU.2005)
 
-tons_per_hectare_SA2005 <- c(1,2,3,4)
-n.pixels_SA2005 <- c(10518,47556,25038,312)
+tons_per_hectare_AU2005 <- c(1,2,3,4,5)
+n.pixels_AU2005 <- c(17026,37676,6997,366,635)
 
 # creo la tabella
-tons_per_hectare_2005SA <- data.frame(tons_per_hectare_SA2005,n.pixels_SA2005)
-View(tons_per_hectare_2005SA)
-# creo le basi per il grafico del 20055 del Sud America
-ggplot2005SA <- ggplot(tons_per_hectare_2005SA, aes(x=tons_per_hectare_SA2005,y=n.pixels_SA2005)) + geom_bar(stat="identity",fill="white")
-plot(ggplot2005SA)
-
-# cambio colore delle colonne in giallo,aggiungo i limiti sulla y, e il titolo e cambio il nome delle x e delle y
-
-ggplot2005SA <- ggplot(tons_per_hectare_2005SA, aes(x=tons_per_hectare_SA2005,y=n.pixels_SA2005) + 
-geom_bar(stat="identity", fill="goldenrod") +
-ylim(0, 60000) +
-labs(title="TONS/HECTARE 2005 SOUTH AMERICA",x = "TONS/HECTARE",y="N. OF PIXELS (SINGOL CELL AREA 10 km2)")
-                       
-# stessa funzione ma R si vede che la prende solo scritta cosi tutta dritta    
-ggplot2005SA <- ggplot(tons_per_hectare_2005SA, aes(x=tons_per_hectare_SA2005,y=n.pixels_SA2005)) + geom_bar(stat="identity",fill="goldenrod") + ylim(0, 60000) + labs(title="TONS/HECTARE 2005 SOUTH AMERICA",x = "TONS/HECTARE",y="N. OF PIXELS (SINGOL CELL AREA 10 km2)")
+tons_per_hectare_2005AU <- data.frame(tons_per_hectare_AU2005,n.pixels_AU2005)
+View(tons_per_hectare_2005AU)
+# creo le basi per il grafico del 2005 del Australia, limiti sulla y, titolo 
+ggplot2005AU <- ggplot(tons_per_hectare_2005AU, aes(x=tons_per_hectare_AU2005,y=n.pixels_AU2005)) + geom_bar(stat="identity",fill="white") + ylim(0, 40000) + labs(title="TONS/HECTARE 2005 AUSTRALIA",x = "TONS/HECTARE",y="N. OF PIXELS (SINGOL CELL AREA 10 km2)")
+plot(ggplot2005AU)
 
 
 # Metto i due grafici appena ottenuti sulla stessa riga 
@@ -412,7 +391,7 @@ library("gridExtra")
 
 # grid.arrange(plot1,plot2,nrow=1) = due grafici nella stessa finestra 
 
-grid.arrange(ggplot1995SA,ggplot2005SA,nrow=1)
+grid.arrange(ggplot1995AU,ggplot2005AU,nrow=1)
 
 
 
@@ -424,13 +403,13 @@ library(dismo)
 
 # points presence, 1000 punti random 
 
-points.p <- randomPoints(soy_1995, 1000 )
+points.p <- randomPoints(wheat_1995, 1000 )
 
 # plotto i punti sulla mappa (pch=20 puntini neri, cex= dimensione punti)
 plot(points,pch=20,cex=0.1)
 
 # plotto la mappa e sopra i punti
-plot(soy_1995_brick,zlim=c(0,4),col=cl)
+plot(wheat_1995_brick,zlim=c(0,4),col=cl)
 points(points,pch=20,cex=0.1)
 
 
