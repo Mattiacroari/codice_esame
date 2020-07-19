@@ -55,10 +55,11 @@ library(dismo)
 
 #### 1. FUNZIONE DI CARICAMENTO IMMAGINI RASTER CON LAPPLY E STACK
 
-setwd("C:/esame")
 library(sp)
 install.packages("raster") 
 library(raster)
+
+setwd("C:/esame")
 rlist <- list.files(pattern=".tif", full.names=T)
 list_rast <- lapply(rlist, raster)
 wheat_yield.multitemp <- stack(list_rast)
