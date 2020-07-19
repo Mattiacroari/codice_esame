@@ -82,10 +82,10 @@ plot(wheat_yield.multitemp,col=cl,zlim=c(0,7))
 
 
 # imposto la work direct. sulla cartella con lo shape file
-
-setwd("C:/esame/coastline")
+install.packages("rgdal")          
 library(rgdal)
 
+setwd("C:/esame/coastline")
 coastline <- readOGR("ne_10m_coastline.shp")
 
 # ri imposto la work direct. sulla cartella "esame"
@@ -105,8 +105,6 @@ setwd("C:/esame")
 wheat_1995 <- raster("Wheat_1995_Yield.tif")
 wheat_2000 <- raster("Wheat_2000_Yield.tif")
 wheat_2005 <- raster("Wheat_2005_Yield.tif")
-
-
 # cerco su internet tutto l'arrange dei colori di R e cerco i colori giusti 
 cl <- colorRampPalette(c('aquamarine','darkolivegreen1','green2','green4'))(100)
 
@@ -115,13 +113,13 @@ plot(wheat_1995,col=cl) # mettere zlim e nome grafico
 # cambio la zlim per avere le aree meglio rappresentate e aggiungo il titolo
 plot(wheat_1995,col=cl,zlim=c(0,7),main="GLOBAL WHEAT YIELD 1995")
 
-
+# plotto le immagini, cambio la zlim per avere le aree meglio rappresentate e aggiungo il titolo
 par(mfrow=c(2,2))
 # le plotto tutte con lo stesso colore, stesso zlim e col titolo
 plot(wheat_1995,col=cl,zlim=c(0,7),main="GLOBAL WHEAT YIELD 1995")
 plot(wheat_2000,col=cl,zlim=c(0,7),main="GLOBAL WHEAT YIELD 2000")
 plot(wheat_2005,col=cl,zlim=c(0,7),main="GLOBAL WHEAT YIELD 2005")
-# le mappe pero non hanno le coastlines, le aggiungo
+# le mappe pero non hanno le coastlines, le aggiungo successivamente
 
 dev.off()
 
