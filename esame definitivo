@@ -1,7 +1,7 @@
 ######### ESAME DI ECOLOGIA DEL PAESAGGIO, 2020/21                           MATTIA CROARI
 
 # dati presi dal sito di EARTHSTAT
-# dati rappresentanti la resa media in tonnellate per ettaro durante il periodo che va dal 1995 al 2005 
+# dati rappresentanti la resa media in tonnellate per ettaro di grano durante il periodo che va dal 1995 al 2005 
 
 
 
@@ -234,11 +234,6 @@ grid.arrange(ggplot1995,ggplot2005,nrow=1)
 
 
 
-
-
-
-
-
 #### 6. FUNZIONE BOXPLOT 
 
 boxplot(wheat_1995, horizontal=T,outline=F,axes=T)
@@ -270,6 +265,8 @@ plot(coastline,lwd=0.3,add=T)
 # extension diverse
 extension <- c(-180, 180, -85.22194, 83.6341)
 diff <- crop(diff, extension)  # non funziona....da riprovare
+
+
 
 
 ##### 8. FUNZIONE CROP      
@@ -316,26 +313,6 @@ cl1 <- colorRampPalette(c('red','yellow','green'))(100)
 # aggiungo sempre lo stesso zlim e il titolo del grafico
 plot(diff_wheat_AU,col=cl1,zlim=c(-2,3),main="AUSTRALIA WHEAT YIELD DIFFERENCE FROM 1995 TO 2005")
 plot(coastline,lwd=0.3,add=T)
-
-################################################################################################
-################################################################################################
-# le coastlines e le immagini tif pero hanno leggermente degli extent diversi per cui le allineo
-
-coastlines  # extension : -180, 180, -85.22194, 83.6341  (xmin, xmax, ymin, ymax)
-diff_wheat_AU    # extension : 110, 160, -50, 0  (xmin, xmax, ymin, ymax)
-extension <- c(-180, 180, -85.22194, 83.6341)
-diff_wheat_AU <- crop(diff_wheat_AU, extension)
-plot(diff_wheat_AU,col=cl1,zlim=c(-2,3),main="AUSTRALIA WHEAT YIELD DIFFERENCE FROM 1995 TO 2005")
-plot(coastline,lwd=0.3,add=T)
-
-# creo una nuova extension da applicare a tutte le immagini raster
-
-extension <- c(-180, 180, -85.22194, 83.6341)
-wheat_1995 <- crop(wheat_1995, extension) # mantengo i nomi originali ma li cambio l'estensione
-wheat_2000 <- crop(wheat_2000, extension)
-wheat_2005 <- crop(wheat_2005, extension)
-################################################################################################
-################################################################################################
 
 
 
@@ -390,6 +367,18 @@ library("gridExtra")
 
 grid.arrange(ggplot1995AU,ggplot2005AU,nrow=1)
 
+
+
+#### 11. FUNZIONE BOXPLOT 
+
+boxplot(wheat_1995_AU, horizontal=T,outline=F,axes=T)
+boxplot(wheat_2005_AU, horizontal=T,outline=F,axes=T)
+
+# con main aggiungo il titolo e le metto con una par una sotto all'altra
+
+par(mfrow=c(1,2))  # se immagine troppo grande fare dev.off()
+boxplot(wheat_1995_AU, horizontal=T,outline=F,axes=T,main="WHEAT YIELD 1995 AUSTRALIA")
+boxplot(wheat_2005_AU, horizontal=T,outline=F,axes=T,main="WHEAT YIELD 2005 AUSTRALIA")
 
 
 
